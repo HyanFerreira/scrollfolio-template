@@ -204,7 +204,7 @@ export function ScrollfolioExperience() {
     <div className="relative h-svh overflow-hidden bg-[#0f1115] text-[#f7f1e8]">
       <header className="fixed inset-x-0 top-0 z-40 border-white/10 border-b bg-[#0f1115]/82 backdrop-blur-xl">
         <div className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-14">
-          <h1 className="text-base font-semibold text-[#f7f1e8]">LOGO</h1>
+          <Image src="/brand/logotipo.svg" alt="Logo" width={151} height={32} priority />
 
           <nav
             className="hidden items-center gap-1 md:flex"
