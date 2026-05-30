@@ -5,6 +5,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 const transitionMs = 850;
 
+const progressItemSize = 36; // h-9
+const progressGap = 12; // gap-3
+const progressStep = progressItemSize + progressGap;
+
 const sections = [
   { id: "intro", label: "01", nav: "Intro" },
   { id: "story", label: "02", nav: "Story" },
@@ -204,7 +208,13 @@ export function ScrollfolioExperience() {
     <div className="relative h-svh overflow-hidden bg-[#0f1115] text-[#f7f1e8]">
       <header className="fixed inset-x-0 top-0 z-40 border-white/10 border-b bg-[#0f1115]/82 backdrop-blur-xl">
         <div className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-14">
-          <Image src="/brand/logotipo.svg" alt="Logo" width={151} height={32} priority />
+          <Image
+            src="/brand/logotipo.svg"
+            alt="Logo"
+            width={151}
+            height={32}
+            priority
+          />
 
           <nav
             className="hidden items-center gap-1 md:flex"
@@ -213,11 +223,10 @@ export function ScrollfolioExperience() {
             {sections.map((section, index) => (
               <button
                 aria-current={activeIndex === index ? "page" : undefined}
-                className={`rounded-[6px] px-3 py-2 text-sm transition-colors ${
-                  activeIndex === index
-                    ? "bg-[#f7f1e8] text-[#0f1115]"
-                    : "text-[#f7f1e8]/68 hover:bg-white/8 hover:text-[#f7f1e8]"
-                }`}
+                className={`rounded-[6px] px-3 py-2 text-sm transition-colors ${activeIndex === index
+                  ? "bg-[#f7f1e8] text-[#0f1115]"
+                  : "text-[#f7f1e8]/68 hover:bg-white/8 hover:text-[#f7f1e8]"
+                  }`}
                 key={section.id}
                 onClick={() => navigateTo(index)}
                 type="button"
@@ -235,6 +244,7 @@ export function ScrollfolioExperience() {
             Start
           </button>
         </div>
+
         <div
           className="h-px origin-left bg-[#e36f50] transition-transform duration-[850ms] ease-[cubic-bezier(0.76,0,0.24,1)]"
           style={{
@@ -244,30 +254,44 @@ export function ScrollfolioExperience() {
       </header>
 
       <aside
-        className="-translate-y-1/2 fixed top-1/2 right-6 z-30 hidden flex-col gap-3 lg:flex"
+        className="-translate-y-1/2 fixed top-1/2 right-6 z-30 hidden rounded-full border border-white/[0.12] bg-black/[0.35] p-[5px] shadow-[0_8px_32px_rgba(0,0,0,0.35)] backdrop-blur-[12px] lg:block"
         aria-label="Section progress"
       >
-        {sections.map((section, index) => (
-          <button
-            aria-current={activeIndex === index ? "step" : undefined}
-            aria-label={`Go to ${section.nav}`}
-            className={`group flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
-              activeIndex === index ? "bg-[#f7f1e8]/12" : "hover:bg-[#f7f1e8]/8"
-            }`}
-            key={section.id}
-            onClick={() => navigateTo(index)}
-            type="button"
+        <div className="relative flex flex-col gap-3">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute top-0 left-0 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-[#f7f1e8]/12 will-change-transform"
+            style={{
+              transform: `translate3d(0, ${activeIndex * 48}px, 0)`,
+              transition:
+                "transform 850ms cubic-bezier(0.76, 0, 0.24, 1), background-color 850ms ease",
+            }}
           >
             <span
-              className={`block h-2.5 w-2.5 rounded-full transition-all ${
-                activeIndex === index
-                  ? "scale-125 bg-[#e36f50]"
-                  : "bg-[#f7f1e8]/36 group-hover:bg-[#f7f1e8]"
-              }`}
+              className="h-2.5 w-2.5 rounded-full bg-[#e36f50]"
+              style={{
+                transition:
+                  "background-color 850ms ease, box-shadow 850ms ease, transform 850ms ease",
+                boxShadow: "0 0 18px rgba(227, 111, 80, 0.45)",
+              }}
             />
-            <span className="sr-only">{section.label}</span>
-          </button>
-        ))}
+          </div>
+
+          {sections.map((section, index) => (
+            <button
+              aria-current={activeIndex === index ? "step" : undefined}
+              aria-label={`Go to ${section.nav}`}
+              className="group relative z-10 flex h-9 w-9 items-center justify-center rounded-full transition-colors duration-300 hover:bg-[#f7f1e8]/8"
+              key={section.id}
+              onClick={() => navigateTo(index)}
+              type="button"
+            >
+              <span className="block h-2.5 w-2.5 rounded-full bg-[#f7f1e8]/36 transition-colors duration-300 group-hover:bg-[#f7f1e8]/80" />
+
+              <span className="sr-only">{section.label}</span>
+            </button>
+          ))}
+        </div>
       </aside>
 
       <main
@@ -478,13 +502,12 @@ export function ScrollfolioExperience() {
             <div className="grid grid-cols-2 gap-3">
               {systemBlocks.map((block, index) => (
                 <div
-                  className={`min-h-28 rounded-[8px] border p-4 sm:min-h-40 ${
-                    index % 3 === 0
-                      ? "border-[#1f6a59]/30 bg-[#1f6a59] text-[#f7f1e8]"
-                      : index % 3 === 1
-                        ? "border-[#d65f45]/28 bg-[#f3c7b6]"
-                        : "border-[#121212]/10 bg-white"
-                  }`}
+                  className={`min-h-28 rounded-[8px] border p-4 sm:min-h-40 ${index % 3 === 0
+                    ? "border-[#1f6a59]/30 bg-[#1f6a59] text-[#f7f1e8]"
+                    : index % 3 === 1
+                      ? "border-[#d65f45]/28 bg-[#f3c7b6]"
+                      : "border-[#121212]/10 bg-white"
+                    }`}
                   key={block}
                 >
                   <div className="text-sm font-semibold">
